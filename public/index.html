@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.socket.io/4.8.0/socket.io.min.js" integrity="sha384-OoIbkvzsFFQAG88r+IqMAjyOtYDPGO0cqK5HF5Uosdy/zUEGySeAzytENMDynREd" crossorigin="anonymous"></script>
+  <title>Nurse Call System</title>
+</head>
+
+<body>
+
+  <ul class="calls">
+  </ul>
+
+  <form id="call-creator">
+    <input type="text" name="room">
+    <button type="submit">Abrir Chamado</button>
+  </form>
+
+  <script>
+    const form = document.querySelector("#call-creator");
+    const socket = io("http://localhost:3000");
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const roomId = form.room.value;
+
+      // fetch("http://192.168.0.197:8080/calls/create", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   },
+      //   body: JSON.stringify({
+      //     roomNumber: roomId,
+      //     priority: 2,
+      //     reasonId: 1,
+      //   }
+      //   )
+      // })
+
+      socket.emit("sendMessage", roomId);
+    })
+
+    socket.on("receiveMessage", data => {
+      console.log(data)
+    })
+  </script>
+</body>
+
+</html>
